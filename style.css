@@ -1,3 +1,129 @@
+/* - RESET & BASIS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
+    font-family: golos text, sans-serif, cursive;
+    color: #E8C84A;
     background-color: #111118;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* - SCREENS */
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.center-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* - LOAD ANIMATION */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* START SCHERM LAYOUT */
+.start-screen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* BACKGROUND IMAGES */
+.background-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    z-index: 0;
+}
+
+.bg-left,
+.bg-center,
+.bg-right {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+   object-position: top;
+}
+
+/* Dark overlay */
+.background-images::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #111118;
+}
+
+/* CENTER BOX boven de afbeeldingen */
+.center-box {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+
+/* TEKST STIJLEN */
+.subtitle {
+    font-size: 14px;
+    letter-spacing: 5px;
+    color: #E8C84A;
+}
+
+.h1-title {
+    font-size: 72px;
+    letter-spacing: 5px;
+    line-height: 1.1;
+    color: #E8C84A;
+}
+
+.wit {
+    color: #ffffff;
+}
+
+.vs-title {
+    font-size: 20px;
+    letter-spacing: 6px;
+    color: #E8C84A;
+}
+
+.auto-start {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #E8C84A;
+    opacity: 0.6;
+}
+
+/* INLAAD ANIMATIE */
+.start-screen {
+    animation: slideDown 0.8s ease both;
 }

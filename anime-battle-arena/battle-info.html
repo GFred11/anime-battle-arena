@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
     <div class="info-screen">
+
+        <!-- HEADER -->
         <div class="header">
             <h1 class="logo">ANIME BATTLE ARENA</h1>
             <div class="nav-tabs">
@@ -18,83 +20,88 @@
             </div>
         </div>
 
+        <!-- HOW TO PLAY -->
         <div class="section">
             <p class="section-label">HOW TO PLAY</p>
             <div class="steps-grid">
-            <span class="step-num">01</span>
-            <h3>Pick your pose</h3>
-            <p>Stand in front of the camera and do one of the 3 poses below</p>
-            </div>
-
-            <div class="step-card">
-                <span class="step-num">02</span>
-                <h3>AI detects</h3>
-                <p>Teachable Machine recognizes your pose in real time via the camera</p>
-            </div>
-
-            <div class="step-card">
-                <span class="step-num">03</span>
-                <h3>Enemy is chosen</h3>
-                <p>The AI randomly picks an opponent pose from a different anime character</p>
-            </div>
-
-            <div class="step-card">
-                <span class="step-num">04</span>
-                <h3>Battle result</h3>
-                <p>Win, lose or draw — based on the power matchup between the two poses</p>
+                <div class="step-card">
+                    <span class="step-num">01</span>
+                    <h3>Pick your pose</h3>
+                    <p>Stand in front of the camera and do one of the 3 poses below</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-num">02</span>
+                    <h3>AI detects</h3>
+                    <p>Teachable Machine recognizes your pose in real time via the camera</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-num">03</span>
+                    <h3>Enemy is chosen</h3>
+                    <p>The AI randomly picks an opponent pose from a different anime character</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-num">04</span>
+                    <h3>Battle result</h3>
+                    <p>Win, lose or draw — based on the power matchup between the two poses</p>
+                </div>
             </div>
         </div>
 
+        <!-- THE 3 POSES -->
         <div class="section">
             <p class="section-label">THE 3 MAIN POSES</p>
             <div class="poses-grid">
-                
+                <div class="pose-card luffy">
+                    <img src="images/gear2luffy.jpg" alt="Luffy">
+                    <h3>Gear Second</h3>
+                    <p>Monkey D Luffy</p>
+                    <span class="power power-blue">Power: 50</span>
+                </div>
+                <div class="pose-card naruto">
+                    <img src="images/narutopose.avif" alt="Naruto">
+                    <h3>Shadow clone Jutsu</h3>
+                    <p>Naruto Uzumaki</p>
+                    <span class="power power-gold">Power: 100</span>
+                </div>
+                <div class="pose-card goku">
+                    <img src="images/gokupose.avif" alt="Goku">
+                    <h3>Instant Transmission</h3>
+                    <p>Son Goku</p>
+                    <span class="power power-white">Power: 150</span>
+                </div>
             </div>
         </div>
 
-        <div class="poses-grid">
-            <div class="pose-card luffy">
-                <img src="/images/gear2luffy.jpg" alt="Luffy">
-                <h3>Gear Second</h3>
-                <p>Monkey D Luffy</p>
-                <span class="power power-blue">Power: 50</span>
-            </div>
-
-            <div class="pose-card naruto">
-                <img src="/images/narutopose.avif" alt="Naruto">
-                <h3>Shadow clone Jutsu</h3>
-                <p>Naruto Uzumaki</p>
-                <span class="power power-gold">Power: 100</span>
-
-                
-            <div class="pose-card goku">
-                <img src="/images/gokupose.avif" alt="Goku">
-                <h3>Instant Transmission</h3>
-                <p>Son Goku</p>
-                <span class="power power-white">Power: 150</span>
-            </div>
-        </div>
-
-        </div>
-
+        <!-- BATTLE RULES -->
         <div class="section">
             <p class="section-label">BATTLE RULES</p>
             <div class="rules-grid">
-                
+                <div class="rule-card">
+                    <h3>Win Condition</h3>
+                    <p>Your pose power must be higher than the enemy's random pose. Each pose has a hidden strength value</p>
+                </div>
+                <div class="rule-card">
+                    <h3>Random enemy</h3>
+                    <p>The AI picks any of the 3 poses randomly as your opponent - you never know what's coming!</p>
+                </div>
             </div>
         </div>
 
+        <!-- FOOTER -->
         <div class="footer">
-            <p class="cam-hint">📸Stand 1-2 meters from the camera📸</p>
+            <p class="cam-hint">📸 Stand 1-2 meters from the camera 📸</p>
             <div class="progress-bar">
                 <div class="progress-fill"></div>
             </div>
+        </div>
 
     </div>
+
     <script>
         setTimeout(() => {
-            window.location.href ="./battle.html";
+            window.location.href = "battle.html";
         }, 6000);
     </script>
+
 </body>
 </html>

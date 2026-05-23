@@ -1,4 +1,4 @@
-/* - RESET & BASE */
+/* - reset and base */
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +13,7 @@ body {
     overflow: hidden;
 }
 
-/* - START SCREEN */
+/* - start scree */
 .start-screen {
     position: relative;
     display: flex;
@@ -24,7 +24,7 @@ body {
     animation: slideDown 0.8s ease both;
 }
 
-/* - BACKGROUND IMAGES */
+/* - background images */
 .background-images {
     position: absolute;
     top: 0;
@@ -45,7 +45,7 @@ body {
     object-position: top;
 }
 
-/* - DARK OVERLAY */
+/* - dark overlay */
 .background-images::after {
     content: '';
     position: absolute;
@@ -53,7 +53,7 @@ body {
     background: rgba(17, 17, 24, 0.5);
 }
 
-/* - CENTER BOX */
+/* - center box */
 .center-box {
     position: relative;
     z-index: 1;
@@ -65,7 +65,7 @@ body {
     text-align: center;
 }
 
-/* - TEXT STYLES */
+/* - text styles */
 .subtitle {
     font-size: 14px;
     letter-spacing: 5px;
@@ -96,7 +96,7 @@ body {
     opacity: 0.6;
 }
 
-/* - PROGRESS BAR */
+/* - progress bar */
 .progress-bar {
     position: relative;
     z-index: 1;
@@ -116,7 +116,7 @@ body {
     animation: fillBar 5s linear forwards;
 }
 
-/* - ANIMATIONS */
+/* - animations */
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -133,9 +133,9 @@ body {
     to   { width: 100%; }
 }
 
-/* BATTLE INFO SCREEN */
+/* battle screen */
 
-/* - INFO SCREEN */
+/* - info screen  */
 .info-screen {
     display: flex;
     flex-direction: column;
@@ -145,7 +145,7 @@ body {
     overflow: auto;
 }
 
-/* - HEADER */
+/* - header */
 .header {
     display: flex;
     align-items: center;
@@ -183,7 +183,7 @@ body {
     color: #E8C84A;
 }
 
-/* - SECTIONS */
+/* - sections */
 .section {
     display: flex;
     flex-direction: column;
@@ -199,7 +199,7 @@ body {
     opacity: 0.35;
 }
 
-/* - STEPS GRID */
+/* - steps grid */
 .steps-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -235,7 +235,7 @@ body {
     opacity: 0.45;
 }
 
-/* - POSES GRID */
+/* - poses grid */
 .poses-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -272,12 +272,12 @@ body {
     padding: 0 12px 8px;
 }
 
-/* - POSE CARD BORDER COLORS */
+/* - pose card border colors */
 .luffy  { border-color: #1a9fbc; }
 .naruto { border-color: #d4870a; }
 .goku   { border-color: rgba(255, 255, 255, 0.25); }
 
-/* - POWER BADGES */
+/* - power images */
 .power {
     display: inline-block;
     font-size: 13px;
@@ -303,7 +303,7 @@ body {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* - RULES GRID */
+/* - rules grid */
 .rules-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -333,7 +333,7 @@ body {
     opacity: 0.45;
 }
 
-/* - FOOTER */
+/* - footer*/
 .footer {
     display: flex;
     align-items: center;

@@ -1,49 +1,75 @@
-const URL = "./my-pose-model/";
+const URL = "../my-pose-model/";
 
+// character data
+const characters = {
+    "Luffy gear second p": {
+        name: "Monkey D Luffy",
+        move: "Gear Second Mode",
+        power: 50,
+        img: "/images/gear2luffy.jpg",
+        badge: "Gear Second"
+    },
+    "naruto shadow clone": {
+        name: "Naruto Uzumaki",
+        move: "Shadow Clone Jutsu",
+        power: 100,
+        img: "/images/narutopose.avif",
+        badge: "Shadow Clone"
+    },
+    "goku instant transm": {
+        name: "Son Goku",
+        move: "Instant Transmission",
+        power: 150,
+        img: "/images/gokupose.avif",
+        badge: "Instant Trans..."
+    }
+};
+
+const enemyKeys = Object.keys(characters);
+
+// game state
+let playerHP = 150;
+let enemyHP = 150;
+let round = 1;
+let battleActive = false;
 let model, webcam, ctx, labelContainer, maxPredictions;
 
-// Start button function
+//  TM starting
 async function init() {
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
 
-    // Model loading
     model = await tmPose.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
 
-    // Webcam up start
     const size = 300;
-    const flip = true; 
-    webcam = new tmPose.Webcam(size, size, flip);
+    webcam = new tmPose.Webcam(size, size, true);
     await webcam.setup();
     await webcam.play();
 
-    // Canvas connecting
     const canvas = document.getElementById("canvas");
     canvas.width = size;
     canvas.height = size;
     ctx = canvas.getContext("2d");
 
-    // Label container
     labelContainer = document.getElementById("label-container");
 
-    // Loop starting
     window.requestAnimationFrame(loop);
 }
 
-// updating frames
-async function loop(timestamp) {
+// Camera looping
+async function loop() {
     webcam.update();
     await predict();
     window.requestAnimationFrame(loop);
 }
 
-// Pose recognition
+// pose recognition
 async function predict() {
     const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
     const prediction = await model.predict(posenetOutput);
 
-    // which pose has the highest score
+    // finding the best pose
     let highestScore = 0;
     let detectedPose = "";
 
@@ -54,21 +80,10 @@ async function predict() {
         }
     }
 
-    // the console log so you can see what it detects
-    console.log("Gedetecteerd:", detectedPose, highestScore.toFixed(2));
+    if (highestScore > 0.85 && characters[detectedPose] && !battleActive) {
+        startBattle(detectedPose);
+    }
 
-    
     drawPose(pose);
 }
 
-// Drawing the skeleton of the pose
-function drawPose(pose) {
-    if (webcam.canvas) {
-        ctx.drawImage(webcam.canvas, 0, 0);
-        if (pose) {
-            const minPartConfidence = 0.5;
-            tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-            tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
-        }
-    }
-}

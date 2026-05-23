@@ -4,12 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battle Arena</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class=" camera_camera_live">
-        <canvas id="canvas"></canvas>
-        <div id="label-container"></div>
-    </div>
+
+    <div class="battle-screen">
+
+        <div class="header">
+            <h1 class="logo">ANIME BATTLE ARENA</h1>
+            <div class="nav-tabs">
+                <span class="tab">Welcome</span>
+                <span class="tab">Pose Guide</span>
+                <span class="tab-active">Battle</span>
+            </div>
+            <span class="round-badge" id="round-badge">ROUND 1</span>
+        </div>
+
+        <!-- battle zone -->
+        <div class="battle-zone">
+
+            <!-- player side screen -->
+            <div class="battle-side battle-side--player">
+                <p class="side-label">PLAYER</p>
+
+                <div class="character-row">
+                    <img class="character-img" id="player-img" src="/images/gear2luffy.jpg" alt="Player">
+                    <div class="character-info">
+                        <h2 class="character-name player-name" id="player-name">Monkey D Luffy</h2>
+                        <span class="character-badge player-badge" id="player-badge">Gear Second</span>
+                    </div>
+                </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>

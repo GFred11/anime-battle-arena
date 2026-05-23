@@ -30,3 +30,45 @@ async function init() {
     // Loop starting
     window.requestAnimationFrame(loop);
 }
+
+// updating frames
+async function loop(timestamp) {
+    webcam.update();
+    await predict();
+    window.requestAnimationFrame(loop);
+}
+
+// Pose recognition
+async function predict() {
+    const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+    const prediction = await model.predict(posenetOutput);
+
+    // which pose has the highest score
+    let highestScore = 0;
+    let detectedPose = "";
+
+    for (let i = 0; i < maxPredictions; i++) {
+        if (prediction[i].probability > highestScore) {
+            highestScore = prediction[i].probability;
+            detectedPose = prediction[i].className;
+        }
+    }
+
+    // the console log so you can see what it detects
+    console.log("Gedetecteerd:", detectedPose, highestScore.toFixed(2));
+
+    
+    drawPose(pose);
+}
+
+// Drawing the skeleton of the pose
+function drawPose(pose) {
+    if (webcam.canvas) {
+        ctx.drawImage(webcam.canvas, 0, 0);
+        if (pose) {
+            const minPartConfidence = 0.5;
+            tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+            tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+        }
+    }
+}

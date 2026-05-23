@@ -60,7 +60,45 @@
                 <span class="vs-text">VS</span>
             </div>
 
-            
+            <!-- enemy side -->
+            <div class="battle-side battle-side--enemy">
+                <p class="side-label">ENEMY</p>
+
+                <div class="character-row">
+                    <img class="character-img" id="enemy-img" src="/images/uigoku.jpg" alt="Enemy">
+                    <div class="character-info">
+                        <h2 class="character-name enemy-name" id="enemy-name">Son Goku</h2>
+                        <span class="character-badge enemy-badge" id="enemy-badge">Instant Trans...</span>
+                    </div>
+                </div>
+
+                <div class="hp-section">
+                    <div class="hp-labels">
+                        <span>HP</span>
+                        <span class="enemy-hp-text" id="enemy-hp-text">150 / 150</span>
+                    </div>
+                    <div class="hp-bar">
+                        <div class="hp-fill enemy-hp-fill" id="enemy-hp-fill"></div>
+                    </div>
+                </div>
+
+                <p class="move-label">Move used:</p>
+                <div class="move-box enemy-move" id="enemy-move">AI PICKS RANDOM</div>
+
+                <div class="camera-box">
+                    <p class="camera-text">AI PICKS RANDOM</p>
+                    <p class="camera-sub">opponent pose</p>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="footer battle-footer">
+            <p class="footer-hint">Do a pose → <span class="footer-accent">Teachable Machine detects it</span> → battle starts</p>
+            <div class="result-box" id="result-box">WAITING...</div>
+        </div>
+
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>

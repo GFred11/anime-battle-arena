@@ -2,21 +2,21 @@ const URL = "../my-pose-model/";
 
 // character data
 const characters = {
-    "Luffy gear second p": {
+    "Luffy gear second pose": {
         name: "Monkey D Luffy",
         move: "Gear Second Mode",
         power: 50,
         img: "/images/gear2luffy.jpg",
         badge: "Gear Second"
     },
-    "naruto shadow clone": {
+    "naruto shadow clone pose": {
         name: "Naruto Uzumaki",
         move: "Shadow Clone Jutsu",
         power: 100,
         img: "/images/narutopose.avif",
         badge: "Shadow Clone"
     },
-    "goku instant transm": {
+    "goku instant transmission pose": {
         name: "Son Goku",
         move: "Instant Transmission",
         power: 150,
@@ -87,3 +87,108 @@ async function predict() {
     drawPose(pose);
 }
 
+// ── battle starting
+function startBattle(playerPose) {
+    battleActive = true;
+
+    const player = characters[playerPose];
+
+    // Random enemy kiezen
+    const randomKey = enemyKeys[Math.floor(Math.random() * enemyKeys.length)];
+    const enemy = characters[randomKey];
+
+    // UI updaten – speler
+    document.getElementById("player-name").textContent = player.name;
+    document.getElementById("player-badge").textContent = player.badge;
+    document.getElementById("player-move").textContent = player.move;
+    document.getElementById("player-img").src = player.img;
+
+    // UI updaten – enemy
+    document.getElementById("enemy-name").textContent = enemy.name;
+    document.getElementById("enemy-badge").textContent = enemy.badge;
+    document.getElementById("enemy-move").textContent = enemy.move;
+    document.getElementById("enemy-img").src = enemy.img;
+
+    // Damage berekenen
+    let playerDamage = 0;
+    let enemyDamage = 0;
+
+    if (player.power > enemy.power) {
+        enemyDamage = player.power - enemy.power;
+    } else if (enemy.power > player.power) {
+        playerDamage = enemy.power - player.power;
+    } else {
+        // Gelijke kracht = beide -50
+        playerDamage = 50;
+        enemyDamage = 50;
+    }
+
+    // HP aanpassen
+    playerHP = Math.max(0, playerHP - playerDamage);
+    enemyHP = Math.max(0, enemyHP - enemyDamage);
+
+    // HP bars updaten
+    updateHP();
+
+    // Resultaat tonen
+    setTimeout(() => {
+        showResult(playerHP, enemyHP);
+    }, 1000);
+}
+
+// ── HP bars updatingg
+function updateHP() {
+    const playerPercent = (playerHP / 150) * 100;
+    const enemyPercent = (enemyHP / 150) * 100;
+
+    document.getElementById("player-hp-fill").style.width = playerPercent + "%";
+    document.getElementById("enemy-hp-fill").style.width = enemyPercent + "%";
+    document.getElementById("player-hp-text").textContent = playerHP + " / 150";
+    document.getElementById("enemy-hp-text").textContent = enemyHP + " / 150";
+}
+
+// ── results tonen
+function showResult(playerHP, enemyHP) {
+    const resultBox = document.getElementById("result-box");
+
+    if (playerHP <= 0 && enemyHP <= 0) {
+        resultBox.textContent = "DRAW!";
+        resultBox.style.color = "#e8c84a";
+    } else if (playerHP <= 0) {
+        resultBox.textContent = "YOU LOSE!";
+        resultBox.style.color = "#e84a4a";
+    } else if (enemyHP <= 0) {
+        resultBox.textContent = "YOU WIN!";
+        resultBox.style.color = "#4ae84a";
+    } else {
+        
+
+        round++;
+        document.getElementById("round-badge").textContent = "ROUND " + round;
+        resultBox.textContent = "ROUND " + round;
+        setTimeout(() => {
+            battleActive = false;
+        }, 2000);
+        return;
+    }
+
+    // win or lose!
+    setTimeout(() => {
+        window.location.href = "result.html";
+    }, 3000);
+}
+
+// drawing skeleton
+function drawPose(pose) {
+    if (webcam.canvas) {
+        ctx.drawImage(webcam.canvas, 0, 0);
+        if (pose) {
+            const minPartConfidence = 0.5;
+            tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+            tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+        }
+    }
+}
+
+// auto starting
+init();

@@ -7,21 +7,21 @@ const characters = {
         name: "Monkey D Luffy",
         move: "Gear Second Mode",
         power: 50,
-        img: "/images/gear2luffy.jpg",
+        img: "../images/gear2luffy.jpg",
         badge: "Gear Second"
     },
     "naruto shadow clone pose": {
         name: "Naruto Uzumaki",
         move: "Shadow Clone Jutsu",
         power: 100,
-        img: "/images/narutopose.avif",
+        img: "../images/narutopose.avif",
         badge: "Shadow Clone"
     },
     "goku instant transmission pose": {
         name: "Son Goku",
         move: "Instant Transmission",
         power: 150,
-        img: "/images/gokupose.avif",
+        img: "../images/gokupose.avif",
         badge: "Instant Trans..."
     }
 };

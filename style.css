@@ -1,15 +1,139 @@
-/* - info screen */
+/* - reset and base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    color: #E8C84A;
+    background-color: #111118;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ── START SCREEN ────────────────────────────────── */
+.start-screen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    animation: slideDown 0.8s ease both;
+}
+
+.background-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    z-index: 0;
+}
+
+.bg-left,
+.bg-center,
+.bg-right {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.background-images::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(17, 17, 24, 0.5);
+}
+
+.center-box {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 14px;
+    letter-spacing: 5px;
+    color: #E8C84A;
+}
+
+.h1-title {
+    font-size: 72px;
+    letter-spacing: 5px;
+    line-height: 1.1;
+    color: #E8C84A;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.wit { color: #ffffff; }
+
+.vs-title {
+    font-size: 20px;
+    letter-spacing: 6px;
+    color: #E8C84A;
+}
+
+.auto-start {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #E8C84A;
+    opacity: 0.6;
+}
+
+/* ── PROGRESS BAR ────────────────────────────────── */
+.progress-bar {
+    position: relative;
+    z-index: 1;
+    width: 300px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #E8C84A;
+    border-radius: 2px;
+    animation: fillBar 5.3s linear forwards;
+}
+
+/* ── ANIMATIONS ──────────────────────────────────── */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-40px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fillBar {
+    from { width: 0%; }
+    to   { width: 100%; }
+}
+
+/* ── INFO SCREEN ─────────────────────────────────── */
 .info-screen {
     display: flex;
     flex-direction: column;
     height: 100vh;
     padding: 16px 28px;
-    gap: 16px;
+    gap: 12px;
     overflow: hidden;
     background-color: #111118;
 }
 
-/* - header */
+/* ── HEADER ──────────────────────────────────────── */
 .header {
     display: flex;
     align-items: center;
@@ -48,7 +172,7 @@
     color: #E8C84A;
 }
 
-/* - sections */
+/* ── SECTIONS ────────────────────────────────────── */
 .section {
     display: flex;
     flex-direction: column;
@@ -64,7 +188,7 @@
     opacity: 0.35;
 }
 
-/* - steps grid */
+/* ── STEPS GRID ──────────────────────────────────── */
 .steps-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -100,7 +224,7 @@
     color: rgba(255, 255, 255, 0.4);
 }
 
-/* - poses grid – grote kaarten zoals Figma */
+/* ── POSES GRID ──────────────────────────────────── */
 .poses-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -136,12 +260,11 @@
     padding: 0 14px 10px;
 }
 
-/* - pose card border colors */
 .luffy  { border-color: #1a9fbc; }
 .naruto { border-color: #d4870a; }
 .goku   { border-color: rgba(255, 255, 255, 0.25); }
 
-/* - power badges */
+/* ── POWER BADGES ────────────────────────────────── */
 .power {
     display: block;
     font-size: 14px;
@@ -171,7 +294,7 @@
     background: rgba(255, 255, 255, 0.05);
 }
 
-/* - rules grid */
+/* ── RULES GRID ──────────────────────────────────── */
 .rules-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -197,10 +320,10 @@
 .rule-card p {
     font-size: 11px;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.45);
 }
 
-/* - footer */
+/* ── FOOTER ──────────────────────────────────────── */
 .footer {
     display: flex;
     align-items: center;
@@ -217,19 +340,339 @@
     letter-spacing: 1px;
 }
 
-/* - progress bar */
-.progress-bar {
-    width: 200px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
+/* ── WIN / LOSE OVERLAY ──────────────────────────── */
+.result-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 15, 0.92);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.result-overlay.active { display: flex; }
+
+.result-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    letter-spacing: 6px;
+}
+
+.result-title.win  { color: #4ae84a; }
+.result-title.lose { color: #e84a4a; }
+.result-title.draw { color: #e8c84a; }
+
+.result-subtitle {
+    font-size: 16px;
+    color: #666688;
+    letter-spacing: 2px;
+}
+
+.result-btn {
+    background: #1e1e0a;
+    border: 1px solid #e8c84a;
+    color: #e8c84a;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    padding: 10px 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* ── BATTLE SCREEN ───────────────────────────────── */
+.battle-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #0a0a0f;
+    color: #ccccee;
+}
+
+.round-badge {
+    background: #1e1e2e;
+    border: 1px solid #3a3a5a;
+    color: #8888aa;
+    font-size: 12px;
+    padding: 4px 16px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+}
+
+/* ── BATTLE ZONE ─────────────────────────────────── */
+.battle-zone {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    flex: 1;
+    min-height: calc(100vh - 140px);
+}
+
+.battle-side {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.battle-side--player { background-color: #0a110a; }
+.battle-side--enemy  { background-color: #110a0a; }
+
+.side-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666688;
+}
+
+/* ── CHARACTER ROW ───────────────────────────────── */
+.character-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.character-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #2a2a4a;
+    transition: opacity 0.5s ease;
+}
+
+.character-img[src=""] {
+    background: #1a1a2a;
+    border: 2px dashed #2a2a4a;
+}
+
+.character-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    letter-spacing: 1px;
+}
+
+.player-name { color: #4ab8e8; }
+.enemy-name  { color: #e84a4a; }
+
+.character-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 6px;
+    letter-spacing: 1px;
+}
+
+.player-badge {
+    background: #0a1a2a;
+    border: 1px solid #1a4a6a;
+    color: #4ab8e8;
+}
+
+.enemy-badge {
+    background: #2a0a0a;
+    border: 1px solid #5a1a1a;
+    color: #e84a4a;
+}
+
+/* ── HP SECTION ──────────────────────────────────── */
+.hp-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hp-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #666688;
+}
+
+.player-hp-text { color: #4ae84a; }
+.enemy-hp-text  { color: #e84a4a; }
+
+.hp-bar {
+    height: 8px;
+    background: #1a1a2a;
+    border-radius: 4px;
     overflow: hidden;
 }
 
-.progress-fill {
+.hp-fill {
     height: 100%;
-    width: 0%;
-    background: #E8C84A;
-    border-radius: 2px;
-    animation: fillBar 5.3s linear forwards;
+    border-radius: 4px;
+    transition: width 0.5s ease;
 }
+
+.player-hp-fill { background: #4ae84a; width: 100%; }
+.enemy-hp-fill  { background: #e84a4a; width: 100%; }
+
+/* ── MOVE BOX ────────────────────────────────────── */
+.move-label {
+    font-size: 11px;
+    color: #555577;
+    margin-bottom: -8px;
+}
+
+.move-box {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    border: 1px solid #2a2a4a;
+    background: #1a1a2a;
+}
+
+.player-move { border-color: #1a3a1a; color: #4ae84a; }
+.enemy-move  { border-color: #3a1a1a; color: #e84a4a; }
+
+/* ── CAMERA BOX ──────────────────────────────────── */
+.camera-box {
+    background: #0d0d1a;
+    border: 2px dashed #2a2a4a;
+    border-radius: 10px;
+    flex: 1;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.camera-live { border-color: #1a3a1a; }
+
+.camera-text {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #444466;
+}
+
+.camera-sub {
+    font-size: 11px;
+    color: #333355;
+}
+
+#canvas {
+    border-radius: 8px;
+    width: 100%;
+    max-width: 300px;
+}
+
+#label-container {
+    font-size: 11px;
+    color: #4ae84a;
+    letter-spacing: 1px;
+}
+
+/* ── VS CENTER ───────────────────────────────────── */
+.vs-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0f;
+    border-left: 1px solid #1a1a2a;
+    border-right: 1px solid #1a1a2a;
+}
+
+.vs-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    color: #e8c84a;
+    letter-spacing: 2px;
+}
+
+/* ── BATTLE FOOTER ───────────────────────────────── */
+.battle-footer {
+    background: #111118;
+    border-top: 1px solid #1a1a2a;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-hint { font-size: 13px; color: #555577; }
+.footer-accent { color: #8888cc; }
+
+.result-box {
+    background: #1a1a0a;
+    border: 1px solid #3a3a1a;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: #e8c84a;
+    letter-spacing: 2px;
+    transition: color 0.3s ease;
+}
+
+/* ── CAMERA PERMISSION ───────────────────────────── */
+.camera-permission {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 15, 0.95);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.permission-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.permission-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 4px;
+    color: #e8c84a;
+}
+
+.permission-sub {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #555577;
+}
+
+/* sats box */
+.stats-box {
+    display: flex;
+    gap: 32px;
+    background: #111118;
+    border: 1px solid #2a2a3a;
+    border-radius: 10px;
+    padding: 16px 32px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    letter-spacing: 2px;
+}
+
+.stat-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #555577;
+}
+
+#stat-wins   { color: #4ae84a; }
+#stat-losses { color: #e84a4a; }
+#stat-draws  { color: #e8c84a; }

@@ -26,6 +26,30 @@ const characters = {
     }
 };
 
+//  local storage stats
+function getStats() {
+    return {
+        wins:   parseInt(localStorage.getItem("wins"))   || 0,
+        losses: parseInt(localStorage.getItem("losses")) || 0,
+        draws:  parseInt(localStorage.getItem("draws"))  || 0
+    };
+}
+
+function saveStats(type) {
+    const stats = getStats();
+    stats[type]++;
+    localStorage.setItem("wins",   stats.wins);
+    localStorage.setItem("losses", stats.losses);
+    localStorage.setItem("draws",  stats.draws);
+}
+
+function showStats() {
+    const stats = getStats();
+    document.getElementById("stat-wins").textContent   = stats.wins;
+    document.getElementById("stat-losses").textContent = stats.losses;
+    document.getElementById("stat-draws").textContent  = stats.draws;
+}
+
 const enemyKeys = Object.keys(characters);
 
 // game state
@@ -188,42 +212,43 @@ function updateHP() {
     document.getElementById("enemy-hp-text").textContent = enemyHP + " / 150";
 }
 
-// showing results
 function showResult(playerHP, enemyHP) {
     const resultBox = document.getElementById("result-box");
-    const overlay = document.getElementById("result-overlay");
-    const title = document.getElementById("result-title");
-    const subtitle = document.getElementById("result-subtitle");
+    const overlay   = document.getElementById("result-overlay");
+    const title     = document.getElementById("result-title");
+    const subtitle  = document.getElementById("result-subtitle");
 
     if (playerHP <= 0 && enemyHP <= 0) {
         resultBox.textContent = "DRAW!";
-        title.textContent = "DRAW!";
-        title.className = "result-title draw";
-        subtitle.textContent = "Both fighters are defeated!";
-        setTimeout(() => overlay.classList.add("active"), 1500);
+        title.textContent     = "DRAW!";
+        title.className       = "result-title draw";
+        subtitle.textContent  = "Both fighters are defeated!";
+        saveStats("draws");
+        setTimeout(() => { showStats(); overlay.classList.add("active"); }, 1500);
 
     } else if (playerHP <= 0) {
         resultBox.textContent = "YOU LOSE!";
-        title.textContent = "YOU LOSE!";
-        title.className = "result-title lose";
-        subtitle.textContent = "The enemy was too strong...";
-        setTimeout(() => overlay.classList.add("active"), 1500);
+        title.textContent     = "YOU LOSE!";
+        title.className       = "result-title lose";
+        subtitle.textContent  = "The enemy was too strong...";
+        saveStats("losses");
+        setTimeout(() => { showStats(); overlay.classList.add("active"); }, 1500);
 
     } else if (enemyHP <= 0) {
         resultBox.textContent = "YOU WIN!";
-        title.textContent = "YOU WIN!";
-        title.className = "result-title win";
-        subtitle.textContent = "Your pose defeated the enemy!";
-        setTimeout(() => overlay.classList.add("active"), 1500);
+        title.textContent     = "YOU WIN!";
+        title.className       = "result-title win";
+        subtitle.textContent  = "Your pose defeated the enemy!";
+        saveStats("wins");
+        setTimeout(() => { showStats(); overlay.classList.add("active"); }, 1500);
 
     } else {
         round++;
         document.getElementById("round-badge").textContent = "ROUND " + round;
         resultBox.textContent = "ROUND " + round;
-
         setTimeout(() => {
             battleActive = false;
-            startBattle(lockedPoseKey); // zelfde pose, nieuwe enemy
+            startBattle(lockedPoseKey);
         }, 2000);
     }
 }

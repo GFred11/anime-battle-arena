@@ -1,4 +1,5 @@
-const URL = "../my-pose-model/";
+// model
+const MODEL_URL = "../my-pose-model/";
 
 // character data
 const characters = {
@@ -32,12 +33,15 @@ let playerHP = 150;
 let enemyHP = 150;
 let round = 1;
 let battleActive = false;
+let playerLocked = false;
+let lockedPoseKey = "";
+let poseDetectionActive = false; 
 let model, webcam, ctx, labelContainer, maxPredictions;
 
-//  TM starting
+// camera startingg
 async function init() {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
+    const modelURL = MODEL_URL + "model.json";
+    const metadataURL = MODEL_URL + "metadata.json";
 
     model = await tmPose.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
@@ -53,11 +57,46 @@ async function init() {
     ctx = canvas.getContext("2d");
 
     labelContainer = document.getElementById("label-container");
+    document.getElementById("camera-permission").style.display = "none";
 
     window.requestAnimationFrame(loop);
+
+    startCountdown();
 }
 
-// Camera looping
+// count down 
+function startCountdown() {
+    const moveBox = document.getElementById("player-move");
+    let count = 5;
+
+    moveBox.textContent = "Get ready! " + count + "...";
+    moveBox.style.color = "#e8c84a";
+
+    const timer = setInterval(() => {
+        count--;
+
+        if (count > 0) {
+            moveBox.textContent = "Get ready! " + count + "...";
+        } else {
+            clearInterval(timer);
+            moveBox.textContent = "DO YOUR POSE NOW!";
+            moveBox.style.color = "#4ae84a";
+            poseDetectionActive = true; 
+
+            setTimeout(() => {
+                if (!playerLocked) {
+                    moveBox.textContent = "No pose detected... try again!";
+                    moveBox.style.color = "#e84a4a";
+                    poseDetectionActive = false;
+
+                    setTimeout(() => startCountdown(), 2000);
+                }
+            }, 3000);
+        }
+    }, 1000);
+}
+
+// camera loop
 async function loop() {
     webcam.update();
     await predict();
@@ -69,7 +108,6 @@ async function predict() {
     const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
     const prediction = await model.predict(posenetOutput);
 
-    // finding the best pose
     let highestScore = 0;
     let detectedPose = "";
 
@@ -80,36 +118,46 @@ async function predict() {
         }
     }
 
-    if (highestScore > 0.85 && characters[detectedPose] && !battleActive) {
+    // detect when countdown finishes
+    if (poseDetectionActive && highestScore > 0.85 && characters[detectedPose] && !playerLocked) {
+        poseDetectionActive = false;
+        playerLocked = true;
+        lockedPoseKey = detectedPose;
         startBattle(detectedPose);
     }
 
     drawPose(pose);
 }
 
-// ── battle starting
+// start battle
 function startBattle(playerPose) {
     battleActive = true;
 
     const player = characters[playerPose];
-
-    // Random enemy kiezen
     const randomKey = enemyKeys[Math.floor(Math.random() * enemyKeys.length)];
     const enemy = characters[randomKey];
 
-    // UI updaten – speler
-    document.getElementById("player-name").textContent = player.name;
-    document.getElementById("player-badge").textContent = player.badge;
-    document.getElementById("player-move").textContent = player.move;
-    document.getElementById("player-img").src = player.img;
+    if (round === 1) {
+        document.getElementById("player-name").textContent = player.name;
+        document.getElementById("player-badge").textContent = player.badge;
 
-    // UI updaten – enemy
+        const playerImg = document.getElementById("player-img");
+        playerImg.src = player.img;
+        playerImg.style.opacity = "1";
+        playerImg.style.filter = "none";
+        playerImg.style.transition = "opacity 0.5s ease";
+    }
+
+    document.getElementById("player-move").textContent = player.move;
+    document.getElementById("player-move").style.color = "#4ae84a";
+
+    // Enemy wisselt elke ronde
     document.getElementById("enemy-name").textContent = enemy.name;
     document.getElementById("enemy-badge").textContent = enemy.badge;
     document.getElementById("enemy-move").textContent = enemy.move;
     document.getElementById("enemy-img").src = enemy.img;
 
-    // Damage berekenen
+    // damage calculation
     let playerDamage = 0;
     let enemyDamage = 0;
 
@@ -118,25 +166,18 @@ function startBattle(playerPose) {
     } else if (enemy.power > player.power) {
         playerDamage = enemy.power - player.power;
     } else {
-        // Gelijke kracht = beide -50
         playerDamage = 50;
         enemyDamage = 50;
     }
 
-    // HP aanpassen
     playerHP = Math.max(0, playerHP - playerDamage);
     enemyHP = Math.max(0, enemyHP - enemyDamage);
 
-    // HP bars updaten
     updateHP();
-
-    // Resultaat tonen
-    setTimeout(() => {
-        showResult(playerHP, enemyHP);
-    }, 1000);
+    setTimeout(() => showResult(playerHP, enemyHP), 1000);
 }
 
-// ── HP bars updatingg
+// hp bars updating
 function updateHP() {
     const playerPercent = (playerHP / 150) * 100;
     const enemyPercent = (enemyHP / 150) * 100;
@@ -147,38 +188,74 @@ function updateHP() {
     document.getElementById("enemy-hp-text").textContent = enemyHP + " / 150";
 }
 
-// ── results tonen
+// showing results
 function showResult(playerHP, enemyHP) {
     const resultBox = document.getElementById("result-box");
+    const overlay = document.getElementById("result-overlay");
+    const title = document.getElementById("result-title");
+    const subtitle = document.getElementById("result-subtitle");
 
     if (playerHP <= 0 && enemyHP <= 0) {
         resultBox.textContent = "DRAW!";
-        resultBox.style.color = "#e8c84a";
+        title.textContent = "DRAW!";
+        title.className = "result-title draw";
+        subtitle.textContent = "Both fighters are defeated!";
+        setTimeout(() => overlay.classList.add("active"), 1500);
+
     } else if (playerHP <= 0) {
         resultBox.textContent = "YOU LOSE!";
-        resultBox.style.color = "#e84a4a";
+        title.textContent = "YOU LOSE!";
+        title.className = "result-title lose";
+        subtitle.textContent = "The enemy was too strong...";
+        setTimeout(() => overlay.classList.add("active"), 1500);
+
     } else if (enemyHP <= 0) {
         resultBox.textContent = "YOU WIN!";
-        resultBox.style.color = "#4ae84a";
-    } else {
-        
+        title.textContent = "YOU WIN!";
+        title.className = "result-title win";
+        subtitle.textContent = "Your pose defeated the enemy!";
+        setTimeout(() => overlay.classList.add("active"), 1500);
 
+    } else {
         round++;
         document.getElementById("round-badge").textContent = "ROUND " + round;
         resultBox.textContent = "ROUND " + round;
+
         setTimeout(() => {
             battleActive = false;
+            startBattle(lockedPoseKey); // zelfde pose, nieuwe enemy
         }, 2000);
-        return;
     }
-
-    // win or lose!
-    setTimeout(() => {
-        window.location.href = "result.html";
-    }, 3000);
 }
 
-// drawing skeleton
+// restart
+function playAgain() {
+    playerHP = 150;
+    enemyHP = 150;
+    round = 1;
+    battleActive = false;
+    playerLocked = false;
+    lockedPoseKey = "";
+    poseDetectionActive = false;
+
+    document.getElementById("result-overlay").classList.remove("active");
+    document.getElementById("round-badge").textContent = "ROUND 1";
+    document.getElementById("result-box").textContent = "WAITING...";
+    document.getElementById("result-box").style.color = "#e8c84a";
+    document.getElementById("player-hp-fill").style.width = "100%";
+    document.getElementById("enemy-hp-fill").style.width = "100%";
+    document.getElementById("player-hp-text").textContent = "150 / 150";
+    document.getElementById("enemy-hp-text").textContent = "150 / 150";
+    document.getElementById("enemy-move").textContent = "AI PICKS RANDOM";
+
+    const playerImg = document.getElementById("player-img");
+    playerImg.src = "";
+    playerImg.style.opacity = "0";
+
+    startCountdown();
+}
+
+// views skeleton
 function drawPose(pose) {
     if (webcam.canvas) {
         ctx.drawImage(webcam.canvas, 0, 0);
@@ -190,5 +267,8 @@ function drawPose(pose) {
     }
 }
 
-// auto starting
-init();
+// click anywhere t start
+document.addEventListener("click", function startOnClick() {
+    init();
+    document.removeEventListener("click", startOnClick);
+});

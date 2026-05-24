@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battle Arena</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -28,7 +29,7 @@
                 <p class="side-label">PLAYER</p>
 
                 <div class="character-row">
-                    <img class="character-img" id="player-img" src="/images/gear2luffy.jpg" alt="Player">
+                    <img class="character-img" id="player-img" src="" alt="Player" style="opacity: 0; background: #1a1a2a;">
                     <div class="character-info">
                         <h2 class="character-name player-name" id="player-name">Monkey D Luffy</h2>
                         <span class="character-badge player-badge" id="player-badge">Gear Second</span>
@@ -92,7 +93,21 @@
             </div>
 
         </div>
-        
+
+        <!-- win or lose overlay -->
+<div class="result-overlay" id="result-overlay">
+    <h1 class="result-title" id="result-title">YOU WIN!</h1>
+    <p class="result-subtitle" id="result-subtitle">Goku defeated the enemy!</p>
+    <button class="result-btn" onclick="playAgain()">PLAY AGAIN</button>
+</div>
+
+<div class="camera-permission" id="camera-permission">
+    <div class="permission-box">
+        <p class="permission-text">⚡ BATTLE STARTING ⚡</p>
+        <p class="permission-sub">Click anywhere to activate camera</p>
+    </div>
+</div>
+
         <div class="footer battle-footer">
             <p class="footer-hint">Do a pose → <span class="footer-accent">Teachable Machine detects it</span> → battle starts</p>
             <div class="result-box" id="result-box">WAITING...</div>
